@@ -3,6 +3,7 @@ package service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import dao.UserDAO;
 import model.User;
@@ -48,6 +49,7 @@ public class UserService {
         }
 	}
 
+	// Alterar a função para receber dados no body como json e retornar como objeto
 	public Object add(Request request, Response response) {
 //		String body = request.body();
 		
@@ -69,85 +71,85 @@ public class UserService {
 		return id;
 	}
 
-//	public Object get(Request request, Response response) {
-//		int id = Integer.parseInt(request.params(":id"));
-//		
-//		BemDeConsumo bemDeConsumo = (BemDeConsumo) bemDeConsumoDAO.get(id);
-//		
-//        if (bemDeConsumo != null) {
-//    	    response.header("Content-Type", "application/xml");
-//    	    response.header("Content-Encoding", "UTF-8");
-//
-//            return "<bemdeconsumo>\n" + 
-//            		"\t<id> " + bemDeConsumo.getId() + "</id>\n" +
-//            		"\t<descricao> " + bemDeConsumo.getDescricao() + "</descricao>\n" +
-//            		"\t<preco> " + bemDeConsumo.getPreco() + "</preco>\n" +
-//            		"\t<quantidade> " + bemDeConsumo.getQuant() + "</quantidade>\n" +
-//            		"\t<fabricacao> " + bemDeConsumo.getDataFabricacao() + "</fabricacao>\n" +
-//            		"\t<validade> " + bemDeConsumo.getDataValidade() + "</validade>\n" +
-//            		"</bemdeconsumo>\n";
-//        } else {
-//            response.status(404); // 404 Not found
-//            return "Produto " + id + " n�o encontrado.";
-//        }
-//
-//	}
+	// Retornar 
+	public Object get(Request request, Response response) {
+		int id = Integer.parseInt(request.params(":id"));
+		
+		User user = (User) userDAO.get(id);
+		
+		if (user != null) {
+    	    response.header("Content-Type", "application/xml");
+    	    response.header("Content-Encoding", "UTF-8");
 
-//	public Object update(Request request, Response response) {
-//        int id = Integer.parseInt(request.params(":id"));
-//        
-//		BemDeConsumo bemDeConsumo = (BemDeConsumo) bemDeConsumoDAO.get(id);
-//
-//        if (bemDeConsumo != null) {
-//        	bemDeConsumo.setDescricao(request.queryParams("descricao"));
-//        	bemDeConsumo.setPreco(Float.parseFloat(request.queryParams("preco")));
-//        	bemDeConsumo.setQuant(Integer.parseInt(request.queryParams("quantidade")));
-//        	bemDeConsumo.setDataFabricacao(LocalDateTime.parse(request.queryParams("dataFabricacao")));
-//        	bemDeConsumo.setDataValidade(LocalDate.parse(request.queryParams("dataValidade")));
-//
-//        	bemDeConsumoDAO.update(bemDeConsumo);
-//        	
-//            return id;
-//        } else {
-//            response.status(404); // 404 Not found
-//            return "Bem de consumo n�o encontrado.";
-//        }
-//
-//	}
-//
-//	public Object remove(Request request, Response response) {
-//        int id = Integer.parseInt(request.params(":id"));
-//        
-//		BemDeConsumo bemDeConsumo = (BemDeConsumo) bemDeConsumoDAO.get(id);
-//
-//        if (bemDeConsumo != null) {
-//
-//        	bemDeConsumoDAO.remove(bemDeConsumo);
-//
-//        	return id;
-//        } else {
-//            response.status(404); // 404 Not found
-//            return "Bem de consumo n�o encontrado.";
-//        }
-//	}
-//
-//	public Object getAll(Request request, Response response) {
-//		StringBuffer returnValue = new StringBuffer("<bensdeconsumo type=\"array\">");
-//		for (Produto produto : bemDeConsumoDAO.getAll()) {
-//			BemDeConsumo bemDeConsumo = (BemDeConsumo) produto;
-//			returnValue.append("\n<bemdeconsumo>\n" + 
-//            		"\t<id> " + bemDeConsumo.getId() + "</id>\n" +
-//            		"\t<descricao> " + bemDeConsumo.getDescricao() + "</descricao>\n" +
-//            		"\t<preco> " + bemDeConsumo.getPreco() + "</preco>\n" +
-//            		"\t<quantidade> " + bemDeConsumo.getQuant() + "</quantidade>\n" +
-//            		"\t<fabricacao> " + bemDeConsumo.getDataFabricacao() + "</fabricacao>\n" +
-//            		"\t<validade> " + bemDeConsumo.getDataValidade() + "</validade>\n" +
-//            		"</bemdeconsumo>\n");
-//		}
-//		returnValue.append("</bensdeconsumo>");
-//	    response.header("Content-Type", "application/xml");
-//	    response.header("Content-Encoding", "UTF-8");
-//		return returnValue.toString();
-//
-//	}
+            return "{\n" + 
+            		"	\"nome\": " + user.getNome() + ",\n" + 
+            		"	\"login\":" + user.getLogin() + ",\n" + 
+            		"	\"senha\": " + user.getSenha() + ",\n" + 
+            		"	\"email\": " + user.getEmail() + ",\n" + 
+            		"	\"cpf\": " + user.getCpf() + ",\n" + 
+            		"	\"dataDeNascimento\": " + user.getDataDeNascimento() + ",\n" + 
+            		"	\"endereco\": " + user.getEndereco() + ",\n" + 
+            		"	\"telefone\": " + user.getTelefone() + 
+            		"}";
+        } else {
+            response.status(404); // 404 Not found
+            return "Usuario com o id " + id + " não foi encontrado.";
+        }
+
+	}
+
+	// Alterar a função para receber dados no body como json e retornar como objeto
+	public Object update(Request request, Response response) {
+        int id = Integer.parseInt(request.params(":id"));
+        
+		User user = (User) userDAO.get(id);
+
+        if (user != null) {
+        	user.setNome(request.queryParams("nome"));
+
+        	userDAO.update(user);
+        	
+            return id;
+        } else {
+            response.status(404); // 404 Not found
+            return "Usuário não encontrado.";
+        }
+
+	}
+
+	public Object remove(Request request, Response response) {
+        int id = Integer.parseInt(request.params(":id"));
+        
+		User user = (User) userDAO.get(id);
+
+        if (user != null) {
+        	userDAO.remove(user);
+
+        	return id;
+        } else {
+            response.status(404); // 404 Not found
+            return "Usuário não encontrado.";
+        }
+	}
+
+	public Object getAll(Request request, Response response) {
+	    response.header("Content-Type", "application/xml");
+	    response.header("Content-Encoding", "UTF-8");
+		StringBuffer returnValue = new StringBuffer("[\n");
+		for (User user : userDAO.getAll()) {
+			User usuario = (User) user;
+			returnValue.append("{\n" + 
+            		"	\"nome\": " + usuario.getNome() + ",\n" + 
+            		"	\"login\":" + usuario.getLogin() + ",\n" + 
+            		"	\"senha\": " + usuario.getSenha() + ",\n" + 
+            		"	\"email\": " + usuario.getEmail() + ",\n" + 
+            		"	\"cpf\": " + usuario.getCpf() + ",\n" + 
+            		"	\"dataDeNascimento\": " + usuario.getDataDeNascimento() + ",\n" + 
+            		"	\"endereco\": " + usuario.getEndereco() + ",\n" + 
+            		"	\"telefone\": " + usuario.getTelefone() + 
+            		"\n},\n");
+		}
+		returnValue.append("]");
+		return returnValue.toString();
+	}
 }

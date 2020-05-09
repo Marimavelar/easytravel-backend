@@ -13,16 +13,14 @@ public class App {
         post("/login", (request, response) -> userService.login(request, response));
 
         post("/cadastrar", (request, response) -> userService.add(request, response));
-        
-//        post("/bensdeconsumo", (request, response) -> userService.add(request, response));
-//
-//        get("/bensdeconsumo/:id", (request, response) -> userService.get(request, response));
-//
-//        put("/bensdeconsumo/:id", (request, response) -> userService.update(request, response));
-//
-//        delete("/bensdeconsumo/:id", (request, response) -> userService.remove(request, response));
-//
-//        get("/bensdeconsumo", (request, response) -> userService.getAll(request, response));
+
+        get("/usuario/:id", (request, response) -> userService.get(request, response));
+
+        put("/usuario/:id", (request, response) -> userService.update(request, response));
+
+        delete("/usuario/:id", (request, response) -> userService.remove(request, response));
+
+        get("/usuarios", (request, response) -> userService.getAll(request, response));
         
         
     }
