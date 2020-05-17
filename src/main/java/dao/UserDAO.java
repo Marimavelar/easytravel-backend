@@ -12,7 +12,7 @@ import java.util.List;
 import model.User;
 
 public class UserDAO {
-	private List<User> usuarios;
+	private List<User> users;
 	private int maxId = 0;
 
 	private File file;
@@ -26,7 +26,7 @@ public class UserDAO {
 	public UserDAO(String filename) throws IOException {
 
 		file = new File(filename);
-		usuarios = new ArrayList<User>();
+		users = new ArrayList<User>();
 		if (file.exists()) {
 			readFromFile();
 		}
@@ -35,7 +35,7 @@ public class UserDAO {
 
 	public void add(User user) {
 		try {
-			usuarios.add(user);
+			users.add(user);
 			this.maxId = (user.getId() > this.maxId) ? user.getId() : this.maxId;
 			this.saveToFile();
 		} catch (Exception e) {
@@ -44,59 +44,59 @@ public class UserDAO {
 	}
 
 	public User get(int id) {
-		for (User usuario : usuarios) {
-			if (id == usuario.getId()) {
-				return usuario;
+		for (User user : users) {
+			if (id == user.getId()) {
+				return user;
 			}
 		}
 		return null;
 	}
 	
 	public User getByLoginAndPassword(String login, String senha) {
-		for (User usuario : usuarios) {
-			if (login.equals(usuario.getLogin()) && senha.equals(usuario.getSenha())) {
-				return usuario;
+		for (User user : users) {
+			if (login.equals(user.getLogin()) && senha.equals(user.getSenha())) {
+				return user;
 			}
 		}
 		return null;
 	}
 
 	public void update(User u) {
-		int index = usuarios.indexOf(u);
+		int index = users.indexOf(u);
 		if (index != -1) {
-			usuarios.set(index, u);
+			users.set(index, u);
 			this.saveToFile();
 		}
 	}
 
 	public void remove(User u) {
-		int index = usuarios.indexOf(u);
+		int index = users.indexOf(u);
 		if (index != -1) {
-			usuarios.remove(index);
+			users.remove(index);
 			this.saveToFile();
 		}
 	}
 
 	public List<User> getAll() {
-		return usuarios;
+		return users;
 	}
 
 	private List<User> readFromFile() {
-		usuarios.clear();
-		User usuario = null;
+		users.clear();
+		User user = null;
 		try (FileInputStream fis = new FileInputStream(file);
 				ObjectInputStream inputFile = new ObjectInputStream(fis)) {
 
 			while (fis.available() > 0) {
-				usuario = (User) inputFile.readObject();
-				usuarios.add(usuario);
-				maxId = (usuario.getId() > maxId) ? usuario.getId() : maxId;
+				user = (User) inputFile.readObject();
+				users.add(user);
+				maxId = (user.getId() > maxId) ? user.getId() : maxId;
 			}
 		} catch (Exception e) {
 			System.out.println("ERRO ao gravar usuario no disco!");
 			e.printStackTrace();
 		}
-		return usuarios;
+		return users;
 	}
 
 	private void saveToFile() {
@@ -104,7 +104,7 @@ public class UserDAO {
 			fos = new FileOutputStream(file, false);
 			outputFile = new ObjectOutputStream(fos);
 
-			for (User usuario : usuarios) {
+			for (User usuario : users) {
 				outputFile.writeObject(usuario);
 			}
 			outputFile.flush();

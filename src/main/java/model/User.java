@@ -2,28 +2,25 @@ package model;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5013005317581181965L;
 	private int id;
-	private String nome;
-	private String endereco;
-	private String cpf;
+	private Endereco endereco;
+	private String email;
 	private String login;
 	private String senha;
-	private String email;
-	private String dataDeNascimento;
 	private String telefone;
-
-	public User(int id, String nome, String endereco, String cpf, String login, String senha, String email,
-			String dataDeNascimento, String telefone) {
-		setId(id);
-		setNome(nome);
-		setEndereco(endereco);
-		setCpf(cpf);
-		setLogin(login);
-		setSenha(senha);
-		setEmail(email);
-		setDataDeNascimento(dataDeNascimento);
-		setTelefone(telefone);
+	
+	public User(int id, Endereco endereco, String login, String senha, String email, String telefone) {
+		this.id = id;
+		this.endereco = endereco;
+		this.login = login;
+		this.senha = senha;
+		this.email = email;
+		this.telefone = telefone;
 	}
 
 	public int getId() {
@@ -33,29 +30,13 @@ public class User implements Serializable{
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEndereco() {
+	
+	public Endereco getEndereco() {
 		return endereco;
 	}
-
-	public void setEndereco(String endereco) {
+	
+	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
 	}
 
 	public String getLogin() {
@@ -82,27 +63,11 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
-	public String getDataDeNascimento() {
-		return dataDeNascimento;
-	}
-
-	public void setDataDeNascimento(String dataDeNascimento) {
-		this.dataDeNascimento = dataDeNascimento;
-	}
-
 	public String getTelefone() {
 		return telefone;
 	}
 
 	public void setTelefone(String telefone) {
 		this.telefone = telefone;
-	}
-	
-	public void login(String login, String senha) {
-		
-	}
-	
-	public void cadastro() {
-		
 	}
 }
