@@ -14,10 +14,12 @@ public class App {
     public static void main(String[] args) {
         port(3030);
         
+        //Rotas Gerais
         post("/login", (request, response) -> userService.login(request, response));
 
         post("/cadastrar", (request, response) -> userService.add(request, response));
 
+        //Rotas Usuário
         get("/usuario/:id", (request, response) -> userService.get(request, response));
 
         put("/usuario/:id", (request, response) -> userService.update(request, response));
@@ -26,6 +28,12 @@ public class App {
 
         get("/usuarios", (request, response) -> userService.getAll(request, response));
         
-        
+        // Rota Pagamento
+        post("/pagamento", (request, response) -> pagamentoService.efetuarPagamento(request, response));
+
+        //Rotas Avaliacao
+        post("/avaliacao", (request, response) -> avaliacaoService.add(request, response));
+
+        get("/avaliacao", (request, response) -> avaliacaoService.getByIdPacote(request, response));
     }
 }
