@@ -51,7 +51,6 @@ public class AvaliacaoDAO {
 		return null;
     }
     
-    // To Do: Retornar lista de avaliações
     public Avaliacao getByIdPacote(int idPacote) {
 		for (Avaliacao avaliacao : avaliacoes) {
 			if (idPacote == avaliacao.getIdPacote()) {
@@ -59,6 +58,11 @@ public class AvaliacaoDAO {
 			}
 		}
 		return null;
+	}
+
+	// Conferir funcionalidade: Retornar lista de avaliações
+	public Avaliacao retornaLista(){
+		return avaliacoes;
 	}
 
 	public void update(Avaliacao avaliacao) {
