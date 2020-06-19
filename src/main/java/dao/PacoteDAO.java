@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -167,7 +168,10 @@ public class PacoteDAO {
 								vetorString[6],
 								vetorString[7],
 								vetorString[8],
-								Double.parseDouble(vetorString[9]))
+								vetorString[9],
+								vetorString[10],
+								vetorString[11],
+								Double.parseDouble(vetorString[12]))
 						);
 			}
 			return pacotes;
