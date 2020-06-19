@@ -6,10 +6,14 @@ import static spark.Spark.put;
 import static spark.Spark.delete;
 import static spark.Spark.port;
 
+import service.AvaliacaoService;
+import service.PagamentoService;
 import service.UserService;
 
 public class App {
 	private static UserService userService = new UserService();
+	private static PagamentoService pagamentoService = new PagamentoService();
+	private static AvaliacaoService avaliacaoService = new AvaliacaoService();
 	
     public static void main(String[] args) {
         port(3030);

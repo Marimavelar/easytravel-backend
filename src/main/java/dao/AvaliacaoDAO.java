@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.Avaliacao;
+import model.User;
 
 public class AvaliacaoDAO {
 	private List<Avaliacao> avaliacoes;
@@ -91,7 +92,6 @@ public class AvaliacaoDAO {
 	}
 
 	private List<Avaliacao> readFromFile() {
-		avaliacoes.clear();
 		Avaliacao avaliacao = null;
 		try {
 			FileInputStream fis = new FileInputStream(file);
@@ -103,7 +103,7 @@ public class AvaliacaoDAO {
 				maxId = (avaliacao.getId() > maxId) ? avaliacao.getId() : maxId;
 			}
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar avaliação no disco!");
+			System.out.println("ERRO ao ler avaliação no disco!");
 			e.printStackTrace();
 		}
 		return avaliacoes;
@@ -120,7 +120,7 @@ public class AvaliacaoDAO {
 			outputFile.flush();
 			this.close();
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar avaliação no disco!");
+			System.out.println("ERRO ao gravar avaliação no disco!" + e.getMessage());
 			e.printStackTrace();
 		}
 	}

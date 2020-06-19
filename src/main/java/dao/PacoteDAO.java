@@ -139,7 +139,7 @@ public class PacoteDAO {
 		while (br.ready()) {
 			linha = br.readLine();
 
-			if (!linha.isBlank())
+			if (linha != null)
 				linhasArquivo.add(linha);
 		}
 		br.close();

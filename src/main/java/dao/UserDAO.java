@@ -94,7 +94,7 @@ public class UserDAO {
 				maxId = (user.getId() > maxId) ? user.getId() : maxId;
 			}
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar usuario no disco!");
+			System.out.println("ERRO ao ler usuario no disco!");
 			e.printStackTrace();
 		}
 		return users;

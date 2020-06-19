@@ -1,8 +1,13 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Pacote {
+public class Pacote implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2107157932006313440L;
 	private int id;
 	private String destino;
 	private Date dataPartida;
