@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.User;
+import model.Avaliacao;
 
 public class AvaliacaoDAO {
 	private List<Avaliacao> avaliacoes;
@@ -26,7 +26,7 @@ public class AvaliacaoDAO {
 	public AvaliacaoDAO(String filename) throws IOException {
 
 		file = new File(filename);
-		users = new ArrayList<Avaliacao>();
+		avaliacoes = new ArrayList<Avaliacao>();
 		if (file.exists()) {
 			readFromFile();
 		}
@@ -60,9 +60,14 @@ public class AvaliacaoDAO {
 		return null;
 	}
 
-	// Conferir funcionalidade: Retornar lista de avaliações
-	public Avaliacao retornaLista(){
-		return avaliacoes;
+	public List <Avaliacao> getAllByIdPacote(int idPacote){
+		List <Avaliacao> avaliacoesPacoteEspecifico = new ArrayList<Avaliacao>();
+		for (Avaliacao avaliacao : avaliacoes) {
+			if (idPacote == avaliacao.getIdPacote()) {
+				avaliacoesPacoteEspecifico.add(avaliacao);
+			}
+		}
+		return avaliacoesPacoteEspecifico;
 	}
 
 	public void update(Avaliacao avaliacao) {
@@ -73,8 +78,8 @@ public class AvaliacaoDAO {
 		}
 	}
 
-	public void remove(Avaliacao avaliacoes) {
-		int index = avaliacoes.indexOf(u);
+	public void remove(Avaliacao avaliacao) {
+		int index = avaliacoes.indexOf(avaliacao);
 		if (index != -1) {
 			avaliacoes.remove(index);
 			this.saveToFile();
@@ -88,8 +93,9 @@ public class AvaliacaoDAO {
 	private List<Avaliacao> readFromFile() {
 		avaliacoes.clear();
 		Avaliacao avaliacao = null;
-		try (FileInputStream fis = new FileInputStream(file);
-				ObjectInputStream inputFile = new ObjectInputStream(fis)) {
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream inputFile = new ObjectInputStream(fis);
 
 			while (fis.available() > 0) {
 				avaliacao = (Avaliacao) inputFile.readObject();

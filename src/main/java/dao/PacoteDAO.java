@@ -1,8 +1,21 @@
 package dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+import model.Pacote;
+
 public class PacoteDAO{
 
-    private List<User> users;
+    private List<Pacote> pacotes;
 	private int maxId = 0;
 
 	private File file;
@@ -13,80 +26,72 @@ public class PacoteDAO{
 		return maxId;
 	}
 
-	public UserDAO(String filename) throws IOException {
+	public PacoteDAO(String filename) throws IOException {
 
 		file = new File(filename);
-		users = new ArrayList<User>();
+		pacotes = new List();
 		if (file.exists()) {
 			readFromFile();
 		}
 
 	}
 
-	public void add(User user) {
+	public void add(Pacote pacote) {
 		try {
-			users.add(user);
-			this.maxId = (user.getId() > this.maxId) ? user.getId() : this.maxId;
+			pacotes.add(pacote);
+			this.maxId = (pacote.getId() > this.maxId) ? pacote.getId() : this.maxId;
 			this.saveToFile();
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar o usuario '" + user.getLogin() + "' no disco!");
+			System.out.println("ERRO ao gravar o pacote '" + pacote.getNome() + "' no disco!");
 		}
 	}
 
-	public User get(int id) {
-		for (User user : users) {
-			if (id == user.getId()) {
-				return user;
-			}
-		}
-		return null;
-	}
-	
-	public User getByLoginAndPassword(String login, String senha) {
-		for (User user : users) {
-			if (login.equals(user.getLogin()) && senha.equals(user.getSenha())) {
-				return user;
+	public Pacote get(int id) {
+		for (Pacote pacote : pacotes) {
+			if (id == pacote.getId()) {
+				return pacote;
 			}
 		}
 		return null;
 	}
 
-	public void update(User u) {
-		int index = users.indexOf(u);
+	public void update(Pacote pacote) {
+		int index = pacotes.indexOf(pacote);
 		if (index != -1) {
-			users.set(index, u);
+			pacotes.set(index, pacote);
 			this.saveToFile();
 		}
 	}
 
-	public void remove(User u) {
-		int index = users.indexOf(u);
+	public void remove(Pacote pacote) {
+		int index = pacotes.indexOf(pacote);
 		if (index != -1) {
-			users.remove(index);
+			pacotes.remove(index);
 			this.saveToFile();
 		}
 	}
 
-	public List<User> getAll() {
-		return users;
+	public List<Pacote> getAll() {
+		return pacotes;
 	}
 
-	private List<User> readFromFile() {
-		users.clear();
-		User user = null;
-		try (FileInputStream fis = new FileInputStream(file);
-				ObjectInputStream inputFile = new ObjectInputStream(fis)) {
+	private List<Pacote> readFromFile() {
+		pacotes.clear();
+		Pacote pacote = null;
+		try{
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream inputFile = new ObjectInputStream(fis);
 
 			while (fis.available() > 0) {
-				user = (User) inputFile.readObject();
-				users.add(user);
-				maxId = (user.getId() > maxId) ? user.getId() : maxId;
+				pacote = (Pacote) inputFile.readObject();
+				pacotes.add(pacote);
+				maxId = (pacote.getId() > maxId) ? pacote.getId() : maxId;
 			}
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar usuario no disco!");
+			System.out.println("ERRO ao gravar pacote no disco!");
 			e.printStackTrace();
 		}
-		return users;
+		return pacotes;
 	}
 
 	private void saveToFile() {
@@ -94,13 +99,13 @@ public class PacoteDAO{
 			fos = new FileOutputStream(file, false);
 			outputFile = new ObjectOutputStream(fos);
 
-			for (User usuario : users) {
-				outputFile.writeObject(usuario);
+			for (Pacote pacote : pacotes) {
+				outputFile.writeObject(pacote);
 			}
 			outputFile.flush();
 			this.close();
 		} catch (Exception e) {
-			System.out.println("ERRO ao gravar usuario no disco!");
+			System.out.println("ERRO ao gravar pacote no disco!");
 			e.printStackTrace();
 		}
 	}
@@ -121,23 +126,18 @@ public class PacoteDAO{
 		}
 	}
 
-    public static Lista lerLinhasArquivo(String caminhoDoArquivo) throws IOException {
-
-		/*Criação de uma nota lista em que receberá cada linha do arquivo em cada Célula*/
-		Lista linhasArquivo = new Lista();
+    public static List lerLinhasArquivo(String caminhoDoArquivo) throws IOException {
+		List <String> linhasArquivo = new List();
 		String linha;
 
 		BufferedReader br = new BufferedReader(new FileReader(caminhoDoArquivo));
 
 		while(br.ready()){
-
 			linha = br.readLine();
 			
 			if(!linha.isBlank())
-				linhasArquivo.adicionar(linha);
-
+				linhasArquivo.add(linha);
 		}
-
 		br.close();
 
 		return linhasArquivo;
@@ -147,25 +147,40 @@ public class PacoteDAO{
 	// Cada posicao do vetor possui um objeto do tipo do arquivo lido (ex.: municipio, partido politico, etc)
 	//@params {String} caminho - caminho do arquivo; {Object} objeto - tipo do objeto que estah guardado no arquivo
 	public static Object leituraDosDados(String caminho, Class<?> cls) throws IOException {
+		List <String> linhasArquivo = lerLinhasArquivo(caminho);
 
+		List <Pacote> pacotes = new ArrayList(); 
 
-		Lista linhasArquivo = lerLinhasArquivo(caminho);
+			for(int i=0; i<linhasArquivo.size(); i++) {
 
-		if(cls.getName().equals(PartidoPolitico.class.getName())) {
-
-			PartidoPolitico [] partidosPoliticos = new PartidoPolitico[linhasArquivo.getTamanho()];
-
-			Celula aux = linhasArquivo.inicio;
-			String linha = aux.objeto.toString();
-
-
-			for(int i=0; i<linhasArquivo.getTamanho(); i++) {
-
-				String vetorString[] = linha.split(";");
-				partidosPoliticos[i] = new PartidoPolitico(vetorString[0],vetorString[1]);
+				String vetorString[] = linhasArquivo.get(i).
+				pacotes.add(new Pacote()) = new PartidoPolitico(vetorString[0],vetorString[1]);
 				linha = aux.prox.objeto.toString();
 			}
 			return partidosPoliticos;
+
+}
+
+if(cls.getName().equals(UrnaEletronica.class.getName())) {
+
+	UrnaEletronica [] urna = new UrnaEletronica[linhasArquivo.getTamanho()];
+
+	Celula aux = linhasArquivo.inicio;
+	String linha = aux.objeto.toString();
+
+	for(int i=0; i<linhasArquivo.getTamanho(); i++) {
+
+		String vetorString[] = linha.split(";");
+		urna[i] = new UrnaEletronica (vetorString[0], Integer.parseInt(vetorString[1]), Integer.parseInt(vetorString[2]));
+		aux = aux.prox;
+
+		if(aux!=null) {
+
+			linha = aux.objeto.toString();
+
 		}
+	}
+
+	return urna;
 
 }

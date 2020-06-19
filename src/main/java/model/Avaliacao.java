@@ -1,3 +1,5 @@
+package model;
+
 public class Avaliacao {
 
     private int idPacote;
@@ -20,7 +22,7 @@ public class Avaliacao {
         this.idPacote = idPacote;
     }
 
-    public int getid() {
+    public int getId() {
         return id;
     }
 

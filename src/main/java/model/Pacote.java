@@ -3,6 +3,7 @@ package model;
 import java.util.Date;
 
 public class Pacote {
+    private int id;
     private String destino;
     private Date dataPartida;
     private Date dataRetorno;
@@ -16,17 +17,26 @@ public class Pacote {
     private String tipoAtividade;
     private String motivoViagem;
 
-    public Pacote(String destino, Date dataPartida, Date dataRetorno, double preco, int quantidadePessoas,
-            String atividades, String meioTransporte, String hospedagem, String nome) {
+    public Pacote(int id, String nome, String destino, Date dataPartida, Date dataRetorno, int quantidadePessoas,
+            String atividades, String meioTransporte, String hospedagem, double preco) {
+                this.id = id;
+                this.nome = nome;
                 this.destino = destino;
                 this.dataPartida = dataPartida;
                 this.dataRetorno = dataRetorno;
-                this.preco = preco;
                 this.quantidadePessoas = quantidadePessoas;
                 this.atividades = atividades;
                 this.meioTransporte = meioTransporte;
                 this.hospedagem = hospedagem;
-                this.nome = nome;
+                this.preco = preco;
+    }
+
+    public int getId(){
+        return id;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public String getDestino(){
@@ -121,7 +131,7 @@ public class Pacote {
         return motivoViagem;
     }
 
-    public void setMotivoViagem(String MotivoViagem){
+    public void setMotivoViagem(String motivoViagem){
         this.motivoViagem = motivoViagem;
     }
 }

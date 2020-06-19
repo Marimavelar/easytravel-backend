@@ -84,8 +84,9 @@ public class UserDAO {
 	private List<User> readFromFile() {
 		users.clear();
 		User user = null;
-		try (FileInputStream fis = new FileInputStream(file);
-				ObjectInputStream inputFile = new ObjectInputStream(fis)) {
+		try {
+			FileInputStream fis = new FileInputStream(file); 
+			ObjectInputStream inputFile = new ObjectInputStream(fis);
 
 			while (fis.available() > 0) {
 				user = (User) inputFile.readObject();
