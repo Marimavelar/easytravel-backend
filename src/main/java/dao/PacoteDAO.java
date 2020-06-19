@@ -13,9 +13,12 @@ import java.io.FileReader;
 
 import model.Pacote;
 
-public class PacoteDAO{
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-    private List<Pacote> pacotes;
+public class PacoteDAO {
+
+	private List<Pacote> pacotes;
 	private int maxId = 0;
 
 	private File file;
@@ -29,7 +32,7 @@ public class PacoteDAO{
 	public PacoteDAO(String filename) throws IOException {
 
 		file = new File(filename);
-		pacotes = new List();
+		pacotes = new ArrayList();
 		if (file.exists()) {
 			readFromFile();
 		}
@@ -78,7 +81,7 @@ public class PacoteDAO{
 	private List<Pacote> readFromFile() {
 		pacotes.clear();
 		Pacote pacote = null;
-		try{
+		try {
 			FileInputStream fis = new FileInputStream(file);
 			ObjectInputStream inputFile = new ObjectInputStream(fis);
 
@@ -126,61 +129,47 @@ public class PacoteDAO{
 		}
 	}
 
-    public static List lerLinhasArquivo(String caminhoDoArquivo) throws IOException {
-		List <String> linhasArquivo = new List();
+	public static List lerLinhasArquivo(String caminhoDoArquivo) throws IOException {
+		List<String> linhasArquivo = new ArrayList();
 		String linha;
 
 		BufferedReader br = new BufferedReader(new FileReader(caminhoDoArquivo));
 
-		while(br.ready()){
+		while (br.ready()) {
 			linha = br.readLine();
-			
-			if(!linha.isBlank())
+
+			if (!linha.isBlank())
 				linhasArquivo.add(linha);
 		}
 		br.close();
 
 		return linhasArquivo;
-	} 
+	}
 
-	// Cria um vetor de objetos a partir do arquivo ".txt" lido
-	// Cada posicao do vetor possui um objeto do tipo do arquivo lido (ex.: municipio, partido politico, etc)
-	//@params {String} caminho - caminho do arquivo; {Object} objeto - tipo do objeto que estah guardado no arquivo
-	public static Object leituraDosDados(String caminho, Class<?> cls) throws IOException {
-		List <String> linhasArquivo = lerLinhasArquivo(caminho);
+	public static Object leituraDosDados(String caminho, Class<?> cls)
+			throws IOException, NumberFormatException, ParseException {
+		List <String> linhasArquivo = new ArrayList();
+		linhasArquivo = lerLinhasArquivo(caminho);
 
 		List <Pacote> pacotes = new ArrayList(); 
 
 			for(int i=0; i<linhasArquivo.size(); i++) {
 
-				String vetorString[] = linhasArquivo.get(i).
-				pacotes.add(new Pacote()) = new PartidoPolitico(vetorString[0],vetorString[1]);
-				linha = aux.prox.objeto.toString();
+				String vetorString[] = linhasArquivo.get(i).split(";");
+				pacotes.add(
+						new Pacote(
+								Integer.parseInt(vetorString[0]),
+								vetorString[1],
+								vetorString[2],
+								new SimpleDateFormat("dd-MM-yyyy").parse(vetorString[3]),
+								new SimpleDateFormat("dd-MM-yyyy").parse(vetorString[4]),
+								Integer.parseInt(vetorString[5]),
+								vetorString[6],
+								vetorString[7],
+								vetorString[8],
+								Double.parseDouble(vetorString[9]))
+						);
 			}
-			return partidosPoliticos;
-
-}
-
-if(cls.getName().equals(UrnaEletronica.class.getName())) {
-
-	UrnaEletronica [] urna = new UrnaEletronica[linhasArquivo.getTamanho()];
-
-	Celula aux = linhasArquivo.inicio;
-	String linha = aux.objeto.toString();
-
-	for(int i=0; i<linhasArquivo.getTamanho(); i++) {
-
-		String vetorString[] = linha.split(";");
-		urna[i] = new UrnaEletronica (vetorString[0], Integer.parseInt(vetorString[1]), Integer.parseInt(vetorString[2]));
-		aux = aux.prox;
-
-		if(aux!=null) {
-
-			linha = aux.objeto.toString();
-
-		}
+			return pacotes;
 	}
-
-	return urna;
-
 }
