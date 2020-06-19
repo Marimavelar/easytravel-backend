@@ -1,12 +1,15 @@
 package service;
 
 import dao.AvaliacaoDAO;
+import java.io.IOException;
+import spark.Request;
+import spark.Response;
 
 public class AvaliacaoService {
 
     private AvaliacaoDAO avaliacaoDAO; 
 
-    public UserService() {
+    public AvaliacaoService() {
 		try {
 			avaliacaoDAO = new AvaliacaoDAO("avaliacao.dat");
 		} catch (IOException e) {
