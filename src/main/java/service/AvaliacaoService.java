@@ -1,6 +1,9 @@
 package service;
 
 import dao.AvaliacaoDAO;
+import model.Avaliacao;
+import model.Pacote;
+
 import java.io.IOException;
 import spark.Request;
 import spark.Response;
@@ -20,22 +23,22 @@ public class AvaliacaoService {
     public Object add(Request request, Response response) {
 		int id = avaliacaoDAO.getMaxId() + 1;
 
-		int idPacote = request.queryParams("idPacote");
-		int id = request.queryParams("id");
-		int nota = request.queryParams("nota");
+		int idPacote = Integer.parseInt(request.queryParams("idPacote"));
+		int idAvaliacao = Integer.parseInt(request.queryParams("idAvaliacao"));
+		int nota = Integer.parseInt(request.queryParams("nota"));
 		String comentario = request.queryParams("comentario");
         
-        Avaliacao avaliacao = (Avaliacao) new Avaliacao(idPacote, id, nota, comentario);
+        Avaliacao avaliacao = (Avaliacao) new Avaliacao(idPacote, idAvaliacao, nota, comentario);
         avaliacaoDAO.add(avaliacao);
 
 		response.status(201); // 201 Created
-		return id;
+		return idAvaliacao;
 	}
 
 	public Object getByIdPacote(Request request, Response response) {
 		int id = Integer.parseInt(request.params(":id"));
 
-		User user = (User) userDAO.get(id);
+		/*Pacote pacote = (Pacote) pacoteDAO.get(id);
 
 		if (user != null) {
 			response.header("Content-Type", "application/xml");
@@ -47,7 +50,7 @@ public class AvaliacaoService {
 		} else {
 			response.status(404); // 404 Not found
 			return "Usuario com o id " + id + " não foi encontrado.";
-		}
+		}*/
 
 	}
 }

@@ -1,3 +1,8 @@
+package service;
+
+import spark.Request;
+import spark.Response;
+
 public class PagamentoService {
 
     public Object efetuarPagamento(Request request, Response response) {
