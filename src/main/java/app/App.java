@@ -8,36 +8,37 @@ import static spark.Spark.port;
 
 import service.AvaliacaoService;
 import service.PagamentoService;
+import service.RoteiroPersonalizadoService;
 import service.UserService;
 
 public class App {
 	private static UserService userService = new UserService();
 	private static PagamentoService pagamentoService = new PagamentoService();
 	private static AvaliacaoService avaliacaoService = new AvaliacaoService();
-	
-    public static void main(String[] args) {
-        port(3030);
-        
-        //Rotas Gerais
-        post("/login", (request, response) -> userService.login(request, response));
+	private static RoteiroPersonalizadoService roteiroPersonalizadoService = new RoteiroPersonalizadoService();
 
-        post("/cadastrar", (request, response) -> userService.add(request, response));
+	public static void main(String[] args) {
+		port(3030);
 
-        //Rotas Usuário
-        get("/usuario/:id", (request, response) -> userService.get(request, response));
+		// Rotas Gerais
+		post("/login", (request, response) -> userService.login(request, response));
+		post("/cadastrar", (request, response) -> userService.add(request, response));
 
-        put("/usuario/:id", (request, response) -> userService.update(request, response));
+		// Rotas Usuário
+		get("/usuario/:id", (request, response) -> userService.get(request, response));
+		put("/usuario/:id", (request, response) -> userService.update(request, response));
+		delete("/usuario/:id", (request, response) -> userService.remove(request, response));
+		get("/usuarios", (request, response) -> userService.getAll(request, response));
 
-        delete("/usuario/:id", (request, response) -> userService.remove(request, response));
+		// Rota Pagamento
+		post("/pagamento", (request, response) -> pagamentoService.efetuarPagamento(request, response));
 
-        get("/usuarios", (request, response) -> userService.getAll(request, response));
-        
-        // Rota Pagamento
-        post("/pagamento", (request, response) -> pagamentoService.efetuarPagamento(request, response));
+		// Rotas Avaliacao
+		post("/avaliacao", (request, response) -> avaliacaoService.add(request, response));
+		get("/avaliacao", (request, response) -> avaliacaoService.getByIdPacote(request, response));
 
-        //Rotas Avaliacao
-        post("/avaliacao", (request, response) -> avaliacaoService.add(request, response));
-
-        get("/avaliacao", (request, response) -> avaliacaoService.getByIdPacote(request, response));
-    }
+		// Rotas pacote
+		post("/pacote", (request, response) -> roteiroPersonalizadoService.add(request, response));
+		get("/pacote/:id", (request, response) -> roteiroPersonalizadoService.get(request, response));
+	}
 }

@@ -43,6 +43,7 @@ public class RoteiroPersonalizadoDAO {
 	public void add(RoteiroPersonalizado roteiroPersonalizado) {
 		try {
 			roteirosPersonalizados.add(roteiroPersonalizado);
+			System.out.println(roteirosPersonalizados.size());
 			this.maxId = (roteiroPersonalizado.getId() > this.maxId) ? roteiroPersonalizado.getId() : this.maxId;
 			this.saveToFile();
 		} catch (Exception e) {
